@@ -44,11 +44,15 @@ pipeline {
                     ]) {
 
                         sh '''
-                            mvn sonar:sonar \
-                            -Dsonar.projectKey=sudoku \
-                            -Dsonar.projectName=Sudoku \
-                            -Dsonar.host.url=$SONAR_HOST_URL \
-                            -Dsonar.token=$SONAR_TOKEN
+                            echo "SonarQube URL: $SONAR_HOST_URL"
+
+			    curl -s "$SONAR_HOST_URL/api/system/status"
+
+			    mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.8.0.7211:sonar \
+			    -Dsonar.projectKey=sudoku \
+			    -Dsonar.projectName=Sudoku \
+			    -Dsonar.host.url=$SONAR_HOST_URL \
+			    -Dsonar.token=$SONAR_TOKEN
                         '''
                     }
                 }
